@@ -55,14 +55,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($case_type == "Case 1" && $arch == "Single Arch") {
         $casePrice = 20000;
     } elseif ($case_type == "Case 1" && $arch == "Double Arch") {
-        $casePrice = 50000;
+        $casePrice = 25000;
     } elseif ($case_type == "Case 2" && $arch == "Single Arch") {
         $casePrice = 40000;
     } elseif ($case_type == "Case 2" && $arch == "Double Arch") {
         $casePrice = 50000;
     } elseif ($case_type == "Case 3" && $arch == "Single Arch") {
         $casePrice = 55000;
-    } elseif ($case_type == "Case 4" && $arch == "Double Arch") {
+    } elseif ($case_type == "Case 3" && $arch == "Double Arch") {
         $casePrice = 65000;
     }
 
