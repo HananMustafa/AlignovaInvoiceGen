@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="container">
-        <h2>Alignova Invoice Generator BETA</h2>
+        <h2>Alignova Invoice Generator</h2>
         <form action="generateReceipt.php" method="POST">
             <div class="input-group">
                 <label for="doctor_name">Doctor Name:</label>
