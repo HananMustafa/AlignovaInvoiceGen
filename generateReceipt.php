@@ -27,11 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Use the imported page as the template
     $pdf->useTemplate($tplIdx);
 
-
-
-
-
-
     // Set font for dynamic content
     $pdf->SetFont('Arial', '', 12);
     $pdf->SetTextColor(0, 14, 36);
@@ -40,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $currDate = date('d-m-Y'); 
     $pdf->SetXY(138.6, 47);
     $pdf->Write(0,"Date: " . $currDate);
-
 
     $pdf->SetFont('Arial', '', 11);
     //DOCTOR DETAILS
@@ -72,15 +66,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $casePrice = 65000;
     }
 
-    
-        $pdf->SetXY(20, 149);
-        $pdf->Write(0, $case_type . ": " . $arch);
-        $pdf->SetXY(108, 149);
-        $pdf->Write(0, $quantity);
-        $pdf->SetXY(134, 149);
-        $pdf->Write(0, $casePrice . "/-");
-    
-
+    $pdf->SetXY(20, 149);
+    $pdf->Write(0, $case_type . ": " . $arch);
+    $pdf->SetXY(108, 149);
+    $pdf->Write(0, $quantity);
+    $pdf->SetXY(134, 149);
+    $pdf->Write(0, $casePrice . "/-");
 
     //3DMODEL & ALIGNOVA BOX
     if ($model_3d == "Yes" && $alignova_box == "Yes") {
@@ -117,7 +108,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdf->Write(0, "2000/-");
     }
 
-
     //CALCULATING SUBTOTAL
     $subTotal = $casePrice;
     if ($model_3d == "Yes") {
@@ -139,20 +129,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pdf->SetFont('Arial', 'B', 14);
     $pdf->Write(0,$grandTotal . "/-");
 
+    // Save the PDF to a temporary directory
+    $tempDir = sys_get_temp_dir(); // Get the system's temp directory
+    $fileName = $doctor_name . ' ' . $currDate . '.pdf';
+    $filePath = $tempDir . DIRECTORY_SEPARATOR . $fileName;
 
+    $pdf->Output('F', $filePath);
 
-
-
-
-
-// Save the PDF to a file
-$fileName = $doctor_name . ' ' . $currDate . '.pdf';
-$pdf->Output('F', $fileName);
-
-// Redirect to downloadReceipt.php
-header('Location: downloadReceipt.php?file=' . urlencode($fileName));
-exit;
+    // Redirect to downloadReceipt.php
+    header('Location: downloadReceipt.php?file=' . urlencode($filePath));
+    exit;
 } else {
     echo "Invalid request method.";
 }
-?>
