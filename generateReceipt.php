@@ -9,7 +9,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $patient_name = $_POST['patient_name'];
     $case_type = $_POST['case_type'];
     $arch = $_POST['arch'];
-    $quantity = $_POST['quantity'];
     $model_3d = isset($_POST['3d_model']) ? 'Yes' : 'No';
     $alignova_box = isset($_POST['alignova_box']) ? 'Yes' : 'No';
     $discount = $_POST['discount'];
@@ -69,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pdf->SetXY(20, 149);
     $pdf->Write(0, $case_type . ": " . $arch);
     $pdf->SetXY(108, 149);
-    $pdf->Write(0, $quantity);
+    $pdf->Write(0, '01');
     $pdf->SetXY(134, 149);
     $pdf->Write(0, $casePrice . "/-");
 
@@ -79,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdf->SetXY(20, 157);
         $pdf->Write(0, "Alignova Box");
         $pdf->SetXY(108, 157);
-        $pdf->Write(0, "1");
+        $pdf->Write(0, "01");
         $pdf->SetXY(134, 157);
         $pdf->Write(0, "2000/-");
     
@@ -87,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdf->SetXY(20, 165);
         $pdf->Write(0, "Alignova Aligners 3D Model");
         $pdf->SetXY(108, 165);
-        $pdf->Write(0, "1");
+        $pdf->Write(0, "01");
         $pdf->SetXY(134, 165);
         $pdf->Write(0, "5000/-");
     } elseif ($model_3d == "Yes" && $alignova_box == "No") {
@@ -95,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdf->SetXY(20, 157);
         $pdf->Write(0, "Alignova Aligners 3D Model");
         $pdf->SetXY(108, 157);
-        $pdf->Write(0, "1");
+        $pdf->Write(0, "01");
         $pdf->SetXY(134, 157);
         $pdf->Write(0, "5000/-");
     } elseif ($model_3d == "No" && $alignova_box == "Yes") {
@@ -103,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdf->SetXY(20, 157);
         $pdf->Write(0, "Alignova Box");
         $pdf->SetXY(108, 157);
-        $pdf->Write(0, "1");
+        $pdf->Write(0, "01");
         $pdf->SetXY(134, 157);
         $pdf->Write(0, "2000/-");
     }

@@ -40,10 +40,7 @@
                     <option value="Double Arch">Double Arch</option>
                 </select>
             </div>
-            <div class="input-group">
-                <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" name="quantity" min="0" required>
-            </div>
+            
 <div class="input-group">
     <label for="3d_model">3D Model:</label>
     <input type="checkbox" id="3d_model" name="3d_model">
