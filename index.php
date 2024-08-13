@@ -55,7 +55,11 @@
 
             <div class="input-group">
                 <label for="discount">Discount:</label>
-                <input type="number" id="discount" name="discount" min="0" required>
+                <input type="number" id="discount" name="discount" min="0" value="0" required>
+            </div>
+            <div class="input-group">
+                <label for="PreviousBalance">Previous Balance:</label>
+                <input type="number" id="PreviousBalance" name="PreviousBalance" min="0" required>
             </div>
             <div class="input-group">
                 <input type="submit" value="Generate Receipt">

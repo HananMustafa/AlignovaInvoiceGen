@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $model_3d = isset($_POST['3d_model']) ? 'Yes' : 'No';
     $alignova_box = isset($_POST['alignova_box']) ? 'Yes' : 'No';
     $discount = $_POST['discount'];
+    $PreviousBalance = $_POST['PreviousBalance'];
     $doctor_name = $_POST['doctor_name'];
     $doc_address = $_POST['doc_address'];
 
@@ -70,7 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pdf->SetXY(108, 149);
     $pdf->Write(0, '01');
     $pdf->SetXY(134, 149);
-    $pdf->Write(0, $casePrice . "/-");
+    $formatted_casePrice = number_format($casePrice, 0);
+    $pdf->Write(0, $formatted_casePrice . "/-");
 
     //3DMODEL & ALIGNOVA BOX
     if ($model_3d == "Yes" && $alignova_box == "Yes") {
@@ -80,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdf->SetXY(108, 157);
         $pdf->Write(0, "01");
         $pdf->SetXY(134, 157);
-        $pdf->Write(0, "2000/-");
+        $pdf->Write(0, "2,000/-");
     
         // 3D Model
         $pdf->SetXY(20, 165);
@@ -88,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdf->SetXY(108, 165);
         $pdf->Write(0, "01");
         $pdf->SetXY(134, 165);
-        $pdf->Write(0, "5000/-");
+        $pdf->Write(0, "5,000/-");
     } elseif ($model_3d == "Yes" && $alignova_box == "No") {
         // 3D Model only
         $pdf->SetXY(20, 157);
@@ -96,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdf->SetXY(108, 157);
         $pdf->Write(0, "01");
         $pdf->SetXY(134, 157);
-        $pdf->Write(0, "5000/-");
+        $pdf->Write(0, "5,000/-");
     } elseif ($model_3d == "No" && $alignova_box == "Yes") {
         // Alignova Box only
         $pdf->SetXY(20, 157);
@@ -104,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdf->SetXY(108, 157);
         $pdf->Write(0, "01");
         $pdf->SetXY(134, 157);
-        $pdf->Write(0, "2000/-");
+        $pdf->Write(0, "2,000/-");
     }
 
     //CALCULATING SUBTOTAL
@@ -116,17 +118,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $subTotal += 2000;
     }
 
-    //CALCULATING GRANDTOTAL
-    $grandTotal = $subTotal - $discount;
 
-    $pdf->SetXY(145, 211);
+    //Previous Balance
+    $formatted_PreviousBalance = number_format($PreviousBalance, 0);
+    $pdf->SetXY(125, 211);
+    $pdf->SetFont('Arial', 'b', 13);
+    $pdf->Write(0,"Previous Balance:");
+
+    $pdf->SetXY(170, 211);
     $pdf->SetFont('Arial', '', 12);
-    $pdf->Write(0,$subTotal . "/-");
-    $pdf->SetXY(145, 219);
-    $pdf->Write(0,$discount . "/-");
-    $pdf->SetXY(145, 228);
-    $pdf->SetFont('Arial', 'B', 14);
-    $pdf->Write(0,$grandTotal . "/-");
+    $pdf->Write(0, $formatted_PreviousBalance . "/-");
+
+
+    //This Transaction
+    $formatted_subTotal = number_format($subTotal, 0);
+    $pdf->SetXY(125, 219);
+    $pdf->SetFont('Arial', 'b', 13);
+    $pdf->Write(0,"This Transaction:");
+
+    $pdf->SetXY(170, 219);
+    $pdf->SetFont('Arial', '', 12);
+    $pdf->Write(0, $formatted_subTotal . "/-");
+
+    //After Discount 
+    if($discount != 0){
+    $AfterDiscount = $subTotal - $discount;
+    $formatted_AfterDiscount = number_format($AfterDiscount, 0);
+    $pdf->SetXY(125, 228);
+    $pdf->SetFont('Arial', 'b', 13);
+    $pdf->Write(0,"After Discount:");
+
+    $pdf->SetXY(170, 228);
+    $pdf->SetFont('Arial', '', 12);
+    $pdf->Write(0, $formatted_AfterDiscount . "/-" );
+
+    //Updated Balance
+    $updatedBalance = $PreviousBalance + $AfterDiscount;
+    $formatted_updatedBalance = number_format($updatedBalance, 0);
+    $pdf->SetXY(125, 237);
+    $pdf->SetFont('Arial', 'b', 13);
+    $pdf->Write(0,"Updated Balance:");
+
+    $pdf->SetXY(170, 237);
+    $pdf->SetFont('Arial', '', 12);
+    $pdf->Write(0, $formatted_updatedBalance . "/-" );
+    }
+    else{
+        //Updated Balance
+        $updatedBalance = $PreviousBalance + $subTotal;
+        $formatted_updatedBalance = number_format($updatedBalance, 0);
+        $pdf->SetXY(125, 228);
+        $pdf->SetFont('Arial', 'b', 13);
+        $pdf->Write(0,"Updated Balance:");
+
+        $pdf->SetXY(170, 228);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Write(0, $formatted_updatedBalance . "/-" );
+    }
+
+    
+
+    
 
     // Save the PDF to a temporary directory
     $tempDir = sys_get_temp_dir(); // Get the system's temp directory
