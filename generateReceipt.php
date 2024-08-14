@@ -178,10 +178,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $filename = $doctor_name . ' ' . $currDate . '.pdf';
     $filename = str_replace(' ', '_', $filename); // Replace spaces with underscores
 
-    // Output the PDF to the browser
-    $pdf->Output('D', $filename); // 'D' forces the download
+    // Output the PDF directly to the browser for download
+    $pdf->Output('D', $filename);
 
-    exit;
+    // Redirect to SaveToDB.php
+    $data = http_build_query([
+        'doctor_name' => $doctor_name,
+        'doc_address' => $doc_address,
+        'patient_name' => $patient_name,
+        'patient_address' => $_POST['patient_address'],
+        'case_type' => $case_type,
+        'arch' => $arch,
+        'model3d' => $model_3d,
+        'alignova_box' => $alignova_box,
+        'formatted_case_price' => $formatted_casePrice,
+        'formatted_previous_balance' => $formatted_PreviousBalance,
+        'formatted_sub_total' => $formatted_SubTotal,
+        'formatted_after_discount' => $formatted_AfterDiscount,
+        'formatted_updated_balance' => $formatted_UpdatedBalance
+    ]);
+
+header('Location: SaveToDB.php?' . $data);
+exit;
 } else {
     echo "Invalid request method.";
 }

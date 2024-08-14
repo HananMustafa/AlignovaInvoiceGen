@@ -1,22 +1,22 @@
 <?php
 require_once 'db_connection.php';
 
-// Check if the data is received via POST
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+// Check if the data is received via GET
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // Capture the form data
-    $doctorName = $_POST['doctor_name'];
-    $doctorAddress = $_POST['doc_address'];
-    $patientName = $_POST['patient_name'];
-    $patientAddress = $_POST['patient_address'];
-    $caseType = $_POST['case_type'];
-    $arch = $_POST['arch'];
-    $model3D = isset($_POST['3d_model']) ? 'Yes' : 'No';
-    $alignovaBox = isset($_POST['alignova_box']) ? 'Yes' : 'No';
-    $formattedCasePrice = $_POST['formatted_case_price'];
-    $formattedPreviousBalance = $_POST['formatted_previous_balance'];
-    $formattedSubTotal = $_POST['formatted_sub_total'];
-    $formattedAfterDiscount = $_POST['formatted_after_discount'];
-    $formattedUpdatedBalance = $_POST['formatted_updated_balance'];
+    $doctorName = $_GET['doctor_name'];
+    $doctorAddress = $_GET['doc_address'];
+    $patientName = $_GET['patient_name'];
+    $patientAddress = $_GET['patient_address'];
+    $caseType = $_GET['case_type'];
+    $arch = $_GET['arch'];
+    $model3D = $_GET['model3d'];
+    $alignovaBox = $_GET['alignova_box'];
+    $formattedCasePrice = $_GET['formatted_case_price'];
+    $formattedPreviousBalance = $_GET['formatted_previous_balance'];
+    $formattedSubTotal = $_GET['formatted_sub_total'];
+    $formattedAfterDiscount = $_GET['formatted_after_discount'];
+    $formattedUpdatedBalance = $_GET['formatted_updated_balance'];
 
     // Create the 'Invoices' table if it doesn't exist
     $createTableSQL = "
@@ -64,8 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ':updatedBalance' => $formattedUpdatedBalance,
     ]);
 
-    // Redirect to downloadReceipt.php
-    header('Location: downloadReceipt.php?file=' . urlencode($_POST['file']));
+    // Optionally, redirect or show a confirmation message
+    echo "Data saved successfully.";
     exit;
 } else {
     echo "Invalid request method.";
