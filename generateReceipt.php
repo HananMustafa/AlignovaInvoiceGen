@@ -31,13 +31,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pdf->SetFont('Arial', '', 12);
     $pdf->SetTextColor(0, 14, 36);
 
-    //DATE
+    // DATE
     $currDate = date('d-m-Y'); 
     $pdf->SetXY(138.6, 47);
     $pdf->Write(0,"Date: " . $currDate);
 
     $pdf->SetFont('Arial', '', 11);
-    //DOCTOR DETAILS
+    // DOCTOR DETAILS
     $pdf->SetXY(20, 65); 
     $pdf->Write(0,$doctor_name);
     $pdf->SetXY(20, 70); // Adjust coordinates as needed
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pdf->SetXY(20, 96);
     $pdf->Write(0, "Case Type: " . $case_type);
 
-    //CALCULATING THE casePrice
+    // CALCULATING THE casePrice
     $casePrice = 0;
 
     if ($case_type == "Case 1" && $arch == "Single Arch") {
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $formatted_casePrice = number_format($casePrice, 0);
     $pdf->Write(0, $formatted_casePrice . "/-");
 
-    //3DMODEL & ALIGNOVA BOX
+    // 3DMODEL & ALIGNOVA BOX
     if ($model_3d == "Yes" && $alignova_box == "Yes") {
         // Alignova Box
         $pdf->SetXY(20, 157);
@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdf->Write(0, "2,000/-");
     }
 
-    //CALCULATING SUBTOTAL
+    // CALCULATING SUBTOTAL
     $subTotal = $casePrice;
     if ($model_3d == "Yes") {
         $subTotal += 5000;
@@ -118,8 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $subTotal += 2000;
     }
 
-
-    //Previous Balance
+    // Previous Balance
     $formatted_PreviousBalance = number_format($PreviousBalance, 0);
     $pdf->SetXY(125, 211);
     $pdf->SetFont('Arial', 'b', 13);
@@ -129,8 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pdf->SetFont('Arial', '', 12);
     $pdf->Write(0, $formatted_PreviousBalance . "/-");
 
-
-    //This Transaction
+    // This Transaction
     $formatted_subTotal = number_format($subTotal, 0);
     $pdf->SetXY(125, 219);
     $pdf->SetFont('Arial', 'b', 13);
@@ -140,31 +138,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pdf->SetFont('Arial', '', 12);
     $pdf->Write(0, $formatted_subTotal . "/-");
 
-    //After Discount 
+    // After Discount 
     if($discount != 0){
-    $AfterDiscount = $subTotal - $discount;
-    $formatted_AfterDiscount = number_format($AfterDiscount, 0);
-    $pdf->SetXY(125, 228);
-    $pdf->SetFont('Arial', 'b', 13);
-    $pdf->Write(0,"After Discount:");
+        $AfterDiscount = $subTotal - $discount;
+        $formatted_AfterDiscount = number_format($AfterDiscount, 0);
+        $pdf->SetXY(125, 228);
+        $pdf->SetFont('Arial', 'b', 13);
+        $pdf->Write(0,"After Discount:");
 
-    $pdf->SetXY(170, 228);
-    $pdf->SetFont('Arial', '', 12);
-    $pdf->Write(0, $formatted_AfterDiscount . "/-" );
+        $pdf->SetXY(170, 228);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Write(0, $formatted_AfterDiscount . "/-" );
 
-    //Updated Balance
-    $updatedBalance = $PreviousBalance + $AfterDiscount;
-    $formatted_updatedBalance = number_format($updatedBalance, 0);
-    $pdf->SetXY(125, 237);
-    $pdf->SetFont('Arial', 'b', 13);
-    $pdf->Write(0,"Updated Balance:");
+        // Updated Balance
+        $updatedBalance = $PreviousBalance + $AfterDiscount;
+        $formatted_updatedBalance = number_format($updatedBalance, 0);
+        $pdf->SetXY(125, 237);
+        $pdf->SetFont('Arial', 'b', 13);
+        $pdf->Write(0,"Updated Balance:");
 
-    $pdf->SetXY(170, 237);
-    $pdf->SetFont('Arial', '', 12);
-    $pdf->Write(0, $formatted_updatedBalance . "/-" );
+        $pdf->SetXY(170, 237);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Write(0, $formatted_updatedBalance . "/-" );
     }
     else{
-        //Updated Balance
+        // Updated Balance
         $updatedBalance = $PreviousBalance + $subTotal;
         $formatted_updatedBalance = number_format($updatedBalance, 0);
         $pdf->SetXY(125, 228);
@@ -176,29 +174,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdf->Write(0, $formatted_updatedBalance . "/-" );
     }
 
-    
+    // Set the filename based on doctor name and date
+    $filename = $doctor_name . ' ' . $currDate . '.pdf';
+    $filename = str_replace(' ', '_', $filename); // Replace spaces with underscores
 
-    
+    // Output the PDF to the browser
+    $pdf->Output('D', $filename); // 'D' forces the download
 
-    // // Save the PDF to a temporary directory
-    // $tempDir = sys_get_temp_dir(); // Get the system's temp directory
-    // $fileName = $doctor_name . ' ' . $currDate . '.pdf';
-    // $filePath = $tempDir . DIRECTORY_SEPARATOR . $fileName;
-
-    // $pdf->Output('F', $filePath);
-
-    // // Redirect to downloadReceipt.php
-    // header('Location: downloadReceipt.php?file=' . urlencode($filePath));
-    // exit;
-
-
-
-    // Save the PDF file
-    $filename = "receipt_" . time() . ".pdf";
-    $pdf->Output('F', $filename);
-
-    // Redirect to SaveToDB.php
-    header('Location: SaveToDB.php?file=' . urlencode($filename) . '&doctor_name=' . urlencode($doctor_name) . '&doc_address=' . urlencode($doc_address) . '&patient_name=' . urlencode($patient_name) . '&patient_address=' . urlencode($_POST['patient_address']) . '&case_type=' . urlencode($case_type) . '&arch=' . urlencode($arch) . '&model3d=' . urlencode($model_3d) . '&alignova_box=' . urlencode($alignova_box) . '&formatted_case_price=' . urlencode($formatted_casePrice) . '&formatted_previous_balance=' . urlencode($formatted_PreviousBalance) . '&formatted_sub_total=' . urlencode($formatted_SubTotal) . '&formatted_after_discount=' . urlencode($formatted_AfterDiscount) . '&formatted_updated_balance=' . urlencode($formatted_UpdatedBalance));
     exit;
 } else {
     echo "Invalid request method.";
