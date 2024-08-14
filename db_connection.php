@@ -2,11 +2,11 @@
 // db_connection.php
 
 // Database credentials
-$host = 'adaptable-prod.database.windows.net';
-$port = '1433';
-$dbname = 'alignovainvoicegen-main-db-093047a122974de21';
-$username = 'alignovainvoicegen-main-db-093047a122974de21';
-$password = 'zBtJxn5v2a9ADEKCy8jxeZbcWNGyzR';
+$host = '';
+$port = '';
+$dbname = '';
+$username = '';
+$password = '';
 
 // Create a new PDO instance
 try {
