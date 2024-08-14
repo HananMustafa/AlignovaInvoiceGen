@@ -180,15 +180,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     
 
-    // Save the PDF to a temporary directory
-    $tempDir = sys_get_temp_dir(); // Get the system's temp directory
-    $fileName = $doctor_name . ' ' . $currDate . '.pdf';
-    $filePath = $tempDir . DIRECTORY_SEPARATOR . $fileName;
+    // // Save the PDF to a temporary directory
+    // $tempDir = sys_get_temp_dir(); // Get the system's temp directory
+    // $fileName = $doctor_name . ' ' . $currDate . '.pdf';
+    // $filePath = $tempDir . DIRECTORY_SEPARATOR . $fileName;
 
-    $pdf->Output('F', $filePath);
+    // $pdf->Output('F', $filePath);
 
-    // Redirect to downloadReceipt.php
-    header('Location: downloadReceipt.php?file=' . urlencode($filePath));
+    // // Redirect to downloadReceipt.php
+    // header('Location: downloadReceipt.php?file=' . urlencode($filePath));
+    // exit;
+
+
+
+    // Save the PDF file
+    $filename = "receipt_" . time() . ".pdf";
+    $pdf->Output('F', $filename);
+
+    // Redirect to SaveToDB.php
+    header('Location: SaveToDB.php?file=' . urlencode($filename) . '&doctor_name=' . urlencode($doctor_name) . '&doc_address=' . urlencode($doc_address) . '&patient_name=' . urlencode($patient_name) . '&patient_address=' . urlencode($_POST['patient_address']) . '&case_type=' . urlencode($case_type) . '&arch=' . urlencode($arch) . '&model3d=' . urlencode($model_3d) . '&alignova_box=' . urlencode($alignova_box) . '&formatted_case_price=' . urlencode($formatted_casePrice) . '&formatted_previous_balance=' . urlencode($formatted_PreviousBalance) . '&formatted_sub_total=' . urlencode($formatted_SubTotal) . '&formatted_after_discount=' . urlencode($formatted_AfterDiscount) . '&formatted_updated_balance=' . urlencode($formatted_UpdatedBalance));
     exit;
 } else {
     echo "Invalid request method.";
