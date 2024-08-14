@@ -1,6 +1,7 @@
 <?php
 
 require_once 'mongo-php/src/Client.php';
+require_once 'php_mongodb-dll/php_mongodb.dll';
 
 // Replace <password> with your actual password
 $connectionString = 'mongodb+srv://hananmustafa:<password>@cluster0.69nsn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';

@@ -181,6 +181,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Output the PDF directly to the browser for download
     $pdf->Output('D', $filename);
 
+
+
+
+    //LOG
+    try{
+        // Generate a log message
+    $logMessage = "Doctor: $doctor_name, Patient: $patient_name, Previous Balance: $PreviousBalance";
+
+    // Display the log message as an error (if errors are logged)
+    trigger_error($logMessage, E_USER_NOTICE);
+    error_log($logMessage);
+
+    // Proceed with receipt generation
+    // ... (your existing code)
+
+    echo "Receipt generated successfully!";
+} catch (Exception $e) {
+    // Log the exception message
+    trigger_error("Error: " . $e->getMessage(), E_USER_ERROR);
+    }
+
+
+
+
+
+
+
 exit;
 } else {
     echo "Invalid request method.";
