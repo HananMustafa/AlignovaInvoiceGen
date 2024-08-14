@@ -20,16 +20,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     // Create the 'Invoices' table if it doesn't exist
     $createTableSQL = "
-        CREATE TABLE IF NOT EXISTS Invoices (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            DoctorName VARCHAR(255),
-            DoctorAddress VARCHAR(255),
-            PatientName VARCHAR(255),
-            PatientAddress VARCHAR(255),
-            CaseType VARCHAR(255),
-            Arch VARCHAR(255),
-            Model3D VARCHAR(10),
-            AlignovaBox VARCHAR(10),
+        IF OBJECT_ID('Invoices', 'U') IS NULL
+        CREATE TABLE Invoices (
+            id INT IDENTITY(1,1) PRIMARY KEY,
+            DoctorName NVARCHAR(255),
+            DoctorAddress NVARCHAR(255),
+            PatientName NVARCHAR(255),
+            PatientAddress NVARCHAR(255),
+            CaseType NVARCHAR(255),
+            Arch NVARCHAR(255),
+            Model3D NVARCHAR(10),
+            AlignovaBox NVARCHAR(10),
             CasePrice DECIMAL(10, 2),
             PreviousBalance DECIMAL(10, 2),
             SubTotal DECIMAL(10, 2),
@@ -39,30 +40,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     ";
 
     // Execute the query to create the table
-    $pdo->exec($createTableSQL);
+    $stmt = sqlsrv_query($conn, $createTableSQL);
+    if ($stmt === false) {
+        die(print_r(sqlsrv_errors(), true));
+    }
 
     // Insert data into the 'Invoices' table
     $insertSQL = "
         INSERT INTO Invoices (DoctorName, DoctorAddress, PatientName, PatientAddress, CaseType, Arch, Model3D, AlignovaBox, CasePrice, PreviousBalance, SubTotal, AfterDiscount, UpdatedBalance)
-        VALUES (:doctorName, :doctorAddress, :patientName, :patientAddress, :caseType, :arch, :model3D, :alignovaBox, :casePrice, :previousBalance, :subTotal, :afterDiscount, :updatedBalance)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ";
 
-    $stmt = $pdo->prepare($insertSQL);
-    $stmt->execute([
-        ':doctorName' => $doctorName,
-        ':doctorAddress' => $doctorAddress,
-        ':patientName' => $patientName,
-        ':patientAddress' => $patientAddress,
-        ':caseType' => $caseType,
-        ':arch' => $arch,
-        ':model3D' => $model3D,
-        ':alignovaBox' => $alignovaBox,
-        ':casePrice' => $formattedCasePrice,
-        ':previousBalance' => $formattedPreviousBalance,
-        ':subTotal' => $formattedSubTotal,
-        ':afterDiscount' => $formattedAfterDiscount,
-        ':updatedBalance' => $formattedUpdatedBalance,
-    ]);
+    $params = [
+        $doctorName, $doctorAddress, $patientName, $patientAddress, $caseType, $arch, $model3D, $alignovaBox,
+        $formattedCasePrice, $formattedPreviousBalance, $formattedSubTotal, $formattedAfterDiscount, $formattedUpdatedBalance
+    ];
+
+    $stmt = sqlsrv_query($conn, $insertSQL, $params);
+    if ($stmt === false) {
+        die(print_r(sqlsrv_errors(), true));
+    }
 
     // Optionally, redirect or show a confirmation message
     echo "Data saved successfully.";
@@ -70,3 +67,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 } else {
     echo "Invalid request method.";
 }
+?>
