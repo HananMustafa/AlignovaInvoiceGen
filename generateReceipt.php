@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //LOG
     try{
         // Generate a log message
-    $logMessage = "Doctor: $doctor_name, Patient: $patient_name, Previous Balance: $PreviousBalance";
+    $logMessage = "Doctor: $doctor_name, Patient: $patient_name, Updated Balance: $updatedBalance";
 
     // Display the log message as an error (if errors are logged)
     trigger_error($logMessage, E_USER_NOTICE);
