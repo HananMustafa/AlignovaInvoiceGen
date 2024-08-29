@@ -497,11 +497,11 @@ $free_coordinate = 149;
     //LOG
     try{
         // Generate a log message
-    $logMessage = "\nDOCTOR: $doctor_name
-                   \nPATIENT: $patient_name 
-                   \nTHIS TRANSACTION: $subTotal
-                   \nUPDATED BALANCE: $updatedBalance
-                   \n";
+    $logMessage = "DOCTOR: $doctor_name
+                   PATIENT: $patient_name 
+                   THIS TRANSACTION: $subTotal
+                   UPDATED BALANCE: $updatedBalance
+                   ";
 
     // Display the log message as an error (if errors are logged)
     trigger_error($logMessage, E_USER_NOTICE);
