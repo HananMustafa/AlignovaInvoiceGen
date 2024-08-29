@@ -17,6 +17,11 @@ h2 {
   color: #f0a500;
 }
 
+h4 {
+  text-align: center;
+  color: #f0a500;
+}
+
 input,
 select,
 input[type="radio"] + label,
@@ -157,3 +162,38 @@ input[type="checkbox"]:checked + label:after {
     padding-right: 0;
   }
 }
+
+/* Making Aligners Qty field small */
+.qty-field {
+  padding: 0.5em; /* Optional: reduce padding for a smaller appearance */
+}
+.input-group input.qty-field {
+  flex: 0 0 20%; /* Ensures the width is respected */
+}
+
+/* Hide fields initially */
+.hidden {
+  display: none;
+}
+.visible {
+  display: block;
+}
+
+/* Style for input fields */
+.input-group {
+  margin-bottom: 1em;
+}
+
+.select-wrapper {
+  margin-bottom: 1em;
+}
+
+input[type="number"] {
+  width: 20%;
+}
+
+
+
+
+
+

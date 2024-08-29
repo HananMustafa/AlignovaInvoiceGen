@@ -16,6 +16,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $doctor_name = $_POST['doctor_name'];
     $doc_address = $_POST['doc_address'];
 
+    $SUA = $_POST['SUA'];
+    $SUA_Retainer = isset($_POST['SUA_Retainer']) ? 'Yes' : 'No';
+    $SUA_Retainer_qty = $_POST['SUA_Retainer_qty'];
+
+    $SLA = $_POST['SLA'];
+    $SLA_Retainer = isset($_POST['SLA_Retainer']) ? 'Yes' : 'No';
+    $SLA_Retainer_qty = $_POST['SLA_Retainer_qty'];
+
+    $DUA = $_POST['DUA'];
+    $DUA_Retainer = isset($_POST['DUA_Retainer']) ? 'Yes' : 'No';
+    $DUA_Retainer_qty = $_POST['DUA_Retainer_qty'];
+
+    $DLA = $_POST['DLA'];
+    $DLA_Retainer = isset($_POST['DLA_Retainer']) ? 'Yes' : 'No';
+    $DLA_Retainer_qty = $_POST['DLA_Retainer_qty'];
+
     // Create new PDF
     $pdf = new FPDI();
     // Set the source PDF file
@@ -28,8 +44,343 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pdf->useTemplate($tplIdx);
 
     // Set font for dynamic content
-    $pdf->SetFont('Arial', '', 12);
+    $pdf->SetFont('Arial', '', 10);
     $pdf->SetTextColor(0, 14, 36);
+
+
+
+
+
+
+
+
+
+$free_coordinate = 149;
+    //MAIN LOGIC FOR ITEMS 
+    if($SUA != 0){
+        //it means its a Single UpperArch case
+        
+            //Item
+            $pdf->SetXY(20, 149);
+            $pdf->Write(0, "Upper Aligners");
+        
+            //Qty
+            $pdf->SetXY(108, 149);
+            $pdf->Write(0, $SUA);
+
+            //Setting Model_3d & AlignovaBox Coordinates
+            $free_coordinate = 157;
+        
+        if($SUA_Retainer == "Yes"){
+        //it means SUA_Retainer_qty has a value
+            //Item
+            $pdf->SetFont('Arial', '', 8);
+            $pdf->SetXY(21, 157);
+            $pdf->Write(0, "Retainers");
+        
+            //Qty
+            $pdf->SetXY(108, 157);
+            $pdf->Write(0, $SUA_Retainer_qty);
+
+            //Back to normal
+            $pdf->SetFont('Arial', '', 10);
+
+            //Setting Model_3d & AlignovaBox Coordinates
+            $free_coordinate = 165;
+        }
+        }
+        
+        else if ($SLA != 0){
+            //it means its a Single Lower Arch case
+        
+            //Item
+            $pdf->SetXY(20, 149);
+            $pdf->Write(0, "Lower Aligners");
+        
+            //Qty
+            $pdf->SetXY(108, 149);
+            $pdf->Write(0, $SLA);
+
+                        //Setting Model_3d & AlignovaBox Coordinates
+                        $free_coordinate = 157;
+        
+        if($SLA_Retainer == "Yes"){
+        //it means SLA_Retainer_qty has a value
+            //Item
+            $pdf->SetFont('Arial', '', 8);
+            $pdf->SetXY(21, 157);
+            $pdf->Write(0, "Retainers");
+        
+            //Qty
+            $pdf->SetXY(108, 157);
+            $pdf->Write(0, $SLA_Retainer_qty);
+
+            //Back to normal
+            $pdf->SetFont('Arial', '', 10);
+
+                        //Setting Model_3d & AlignovaBox Coordinates
+                        $free_coordinate = 165;
+        }
+        
+        }
+        else if ($DUA != 0){
+        //it means its a Double Arch case
+        
+        
+        if($DUA_Retainer == "Yes" && $DLA_Retainer == "Yes"){
+        //it means DLA/DUA has Retainers
+        
+            //DUA
+            //Item
+            $pdf->SetXY(20, 149);
+            $pdf->Write(0, "Upper Aligners");
+            //Qty
+            $pdf->SetXY(108, 149);
+            $pdf->Write(0, $DUA);
+
+            //Retainer
+            $pdf->SetFont('Arial', '', 8);
+            $pdf->SetXY(21, 157);
+            $pdf->Write(0, "Upper Retainers");
+            //Qty
+            $pdf->SetXY(108, 157);
+            $pdf->Write(0, $DUA_Retainer_qty);
+
+            //Back to normal
+            $pdf->SetFont('Arial', '', 10);
+        
+            //DLA
+            //Item
+            $pdf->SetXY(20, 165);
+            $pdf->Write(0, "Lower Aligners");
+            //Qty
+            $pdf->SetXY(108, 165);
+            $pdf->Write(0, $DLA);
+
+           //Retainer
+           $pdf->SetFont('Arial', '', 8);
+            $pdf->SetXY(21, 173);
+            $pdf->Write(0, "Lower Retainers");
+            //Qty
+            $pdf->SetXY(108, 173);
+            $pdf->Write(0, $DLA_Retainer_qty);
+
+            //Back to normal
+            $pdf->SetFont('Arial', '', 10);
+
+                        //Setting Model_3d & AlignovaBox Coordinates
+                        $free_coordinate = 181;
+        }
+        else if ($DUA_Retainer == "Yes" && $DLA_Retainer == "No"){
+        //it means only DUA has Retainers
+            //DUA
+            //Item
+            $pdf->SetXY(20, 149);
+            $pdf->Write(0, "Upper Aligners");
+            //Qty
+            $pdf->SetXY(108, 149);
+            $pdf->Write(0, $DUA);
+
+
+            //Retainer
+            $pdf->SetFont('Arial', '', 8);
+            $pdf->SetXY(21, 157);
+            $pdf->Write(0, "Upper Retainers");
+            //Qty
+            $pdf->SetXY(108, 157);
+            $pdf->Write(0, $DUA_Retainer_qty);
+
+            //Back to normal
+            $pdf->SetFont('Arial', '', 10);
+        
+            //DLA
+            //Item
+            $pdf->SetXY(20, 165);
+            $pdf->Write(0, "Lower Aligners");
+            //Qty
+            $pdf->SetXY(108, 165);
+            $pdf->Write(0, $DLA);
+
+                        //Setting Model_3d & AlignovaBox Coordinates
+                        $free_coordinate = 173;
+        }
+        else if ($DUA_Retainer == "No" && $DLA_Retainer == "Yes"){
+        //it means only DLA has Retainers
+            //DUA
+            //Item
+            $pdf->SetXY(20, 149);
+            $pdf->Write(0, "Upper Aligners");
+            //Qty
+            $pdf->SetXY(108, 149);
+            $pdf->Write(0, $DUA);
+        
+            //DLA
+            //Item
+            $pdf->SetXY(20, 157);
+            $pdf->Write(0, "Lower Aligners");
+            //Qty
+            $pdf->SetXY(108, 157);
+            $pdf->Write(0, $DLA);
+
+
+           //Retainer
+           $pdf->SetFont('Arial', '', 8);
+            $pdf->SetXY(21, 165);
+            $pdf->Write(0, "Lower Retainers");
+            //Qty
+            $pdf->SetXY(108, 165);
+            $pdf->Write(0, $DLA_Retainer_qty);
+
+            //Back to normal
+            $pdf->SetFont('Arial', '', 10);
+
+                        //Setting Model_3d & AlignovaBox Coordinates
+                        $free_coordinate = 173;
+
+
+        }
+        else{
+        //it means DUA/DLA dont has Retainers
+            //DUA
+            //Item
+            $pdf->SetXY(20, 149);
+            $pdf->Write(0, "Upper Aligners");
+        
+            //Qty
+            $pdf->SetXY(108, 149);
+            $pdf->Write(0, $DUA);
+        
+            //DLA
+            //Item
+            $pdf->SetXY(20, 157);
+            $pdf->Write(0, "Lower Aligners");
+        
+            //Qty
+            $pdf->SetXY(108, 157);
+            $pdf->Write(0, $DLA);
+
+                        //Setting Model_3d & AlignovaBox Coordinates
+                        $free_coordinate = 165;
+        }
+        
+        }
+
+    // CALCULATING THE casePrice
+    $casePrice = 0;
+
+    if($arch == "Single Upper Arch" || $arch == "Single Lower Arch"){
+        if($case_type == "Case 1"){
+            $casePrice = 20000;
+        }
+        else if($case_type == "Case 2"){
+            $casePrice = 40000;
+        }
+        else if($case_type == "Case 3"){
+            $casePrice = 55000;
+        }
+    }
+    else if ($arch == "Double Arch"){
+        if($case_type == "Case 1"){
+            $casePrice = 25000;
+        }
+        else if($case_type == "Case 2"){
+            $casePrice = 50000;
+        }
+        else if($case_type == "Case 3"){
+            $casePrice = 65000;
+        }
+    }
+
+
+
+
+    if ($case_type == "Case 1") {
+        if($arch == "Single Upper Arch" || $arch == "Single Lower Arch"){
+            $casePrice = 20000;
+        }
+    } elseif ($case_type == "Case 1" && $arch == "Double Arch") {
+        $casePrice = 25000;
+    } elseif ($case_type == "Case 2") {
+        if($arch == "Single Upper Arch" || $arch == "Single Lower Arch"){
+            $casePrice = 40000;
+        }
+    } elseif ($case_type == "Case 2" && $arch == "Double Arch") {
+        $casePrice = 50000;
+    } elseif ($case_type == "Case 3") {
+        if($arch == "Single Upper Arch" || $arch == "Single Lower Arch"){
+            $casePrice = 55000;
+        }
+    } elseif ($case_type == "Case 3" && $arch == "Double Arch") {
+        $casePrice = 65000;
+    }
+    $formatted_casePrice = number_format($casePrice, 0);
+    $pdf->SetXY(134, 149);
+    $pdf->Write(0, $formatted_casePrice . "/-");
+    
+
+
+
+
+
+
+    
+    // 3DMODEL & ALIGNOVA BOX
+    $coordinate1 = $free_coordinate; 
+    $coordinate2 = $coordinate1 + 8;
+    $coordinate3 = $coordinate2 + 8;     
+    if ($model_3d == "Yes" && $alignova_box == "Yes") {
+        // Alignova Box
+        $pdf->SetXY(20, $coordinate1);
+        $pdf->Write(0, "Alignova Box");
+        $pdf->SetXY(108, $coordinate1);
+        $pdf->Write(0, "01");
+        $pdf->SetXY(134, $coordinate1);
+        $pdf->Write(0, "2,000/-");
+    
+        // 3D Model
+        $pdf->SetXY(20, $coordinate2);
+        $pdf->Write(0, "Alignova Aligners 3D Model");
+        $pdf->SetXY(108, $coordinate2);
+        $pdf->Write(0, "01");
+        $pdf->SetXY(134, $coordinate2);
+        $pdf->Write(0, "5,000/-");
+    } elseif ($model_3d == "Yes" && $alignova_box == "No") {
+        // 3D Model only
+        $pdf->SetXY(20, $coordinate1);
+        $pdf->Write(0, "Alignova Aligners 3D Model");
+        $pdf->SetXY(108, $coordinate1);
+        $pdf->Write(0, "01");
+        $pdf->SetXY(134, $coordinate1);
+        $pdf->Write(0, "5,000/-");
+    } elseif ($model_3d == "No" && $alignova_box == "Yes") {
+        // Alignova Box only
+        $pdf->SetXY(20, $coordinate1);
+        $pdf->Write(0, "Alignova Box");
+        $pdf->SetXY(108, $coordinate1);
+        $pdf->Write(0, "01");
+        $pdf->SetXY(134, $coordinate1);
+        $pdf->Write(0, "2,000/-");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // DATE
     $currDate = date('d-m-Y'); 
@@ -47,67 +398,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pdf->Write(0, "Name: " . $patient_name);
 
     $pdf->SetXY(20, 96);
-    $pdf->Write(0, "Case Type: " . $case_type);
+    $pdf->Write(0, "Case Type: " . $case_type . " " . $arch);
 
-    // CALCULATING THE casePrice
-    $casePrice = 0;
 
-    if ($case_type == "Case 1" && $arch == "Single Arch") {
-        $casePrice = 20000;
-    } elseif ($case_type == "Case 1" && $arch == "Double Arch") {
-        $casePrice = 25000;
-    } elseif ($case_type == "Case 2" && $arch == "Single Arch") {
-        $casePrice = 40000;
-    } elseif ($case_type == "Case 2" && $arch == "Double Arch") {
-        $casePrice = 50000;
-    } elseif ($case_type == "Case 3" && $arch == "Single Arch") {
-        $casePrice = 55000;
-    } elseif ($case_type == "Case 3" && $arch == "Double Arch") {
-        $casePrice = 65000;
-    }
 
-    $pdf->SetXY(20, 149);
-    $pdf->Write(0, $case_type . ": " . $arch);
-    $pdf->SetXY(108, 149);
-    $pdf->Write(0, '01');
-    $pdf->SetXY(134, 149);
-    $formatted_casePrice = number_format($casePrice, 0);
-    $pdf->Write(0, $formatted_casePrice . "/-");
 
-    // 3DMODEL & ALIGNOVA BOX
-    if ($model_3d == "Yes" && $alignova_box == "Yes") {
-        // Alignova Box
-        $pdf->SetXY(20, 157);
-        $pdf->Write(0, "Alignova Box");
-        $pdf->SetXY(108, 157);
-        $pdf->Write(0, "01");
-        $pdf->SetXY(134, 157);
-        $pdf->Write(0, "2,000/-");
-    
-        // 3D Model
-        $pdf->SetXY(20, 165);
-        $pdf->Write(0, "Alignova Aligners 3D Model");
-        $pdf->SetXY(108, 165);
-        $pdf->Write(0, "01");
-        $pdf->SetXY(134, 165);
-        $pdf->Write(0, "5,000/-");
-    } elseif ($model_3d == "Yes" && $alignova_box == "No") {
-        // 3D Model only
-        $pdf->SetXY(20, 157);
-        $pdf->Write(0, "Alignova Aligners 3D Model");
-        $pdf->SetXY(108, 157);
-        $pdf->Write(0, "01");
-        $pdf->SetXY(134, 157);
-        $pdf->Write(0, "5,000/-");
-    } elseif ($model_3d == "No" && $alignova_box == "Yes") {
-        // Alignova Box only
-        $pdf->SetXY(20, 157);
-        $pdf->Write(0, "Alignova Box");
-        $pdf->SetXY(108, 157);
-        $pdf->Write(0, "01");
-        $pdf->SetXY(134, 157);
-        $pdf->Write(0, "2,000/-");
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // CALCULATING SUBTOTAL
     $subTotal = $casePrice;
@@ -187,7 +497,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //LOG
     try{
         // Generate a log message
-    $logMessage = "Doctor: $doctor_name, Patient: $patient_name, Updated Balance: $updatedBalance";
+    $logMessage = "Doctor: $doctor_name, \nPatient: $patient_name, \nUpdated Balance: $updatedBalance";
 
     // Display the log message as an error (if errors are logged)
     trigger_error($logMessage, E_USER_NOTICE);
@@ -201,9 +511,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Log the exception message
     trigger_error("Error: " . $e->getMessage(), E_USER_ERROR);
     }
-
-
-
 
 
 
