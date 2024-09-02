@@ -521,7 +521,7 @@ $free_coordinate = 149;
 
 
 
-
+    error_log('CHECKKK');
 
 
 
