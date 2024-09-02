@@ -1,10 +1,5 @@
 <?php
 
-//FOR GEO LOCATION
-require 'vendor/autoload.php';
-use GeoIp2\Database\Reader;
-
-
 
 require_once './FPDF/fpdf.php';
 require_once './FPDI/src/autoload.php';
@@ -521,44 +516,21 @@ $free_coordinate = 149;
 
 
 
-    error_log('CHECKKK');
 
 
 
 
 
-    // Path to the GeoLite2-City.mmdb file
-    $databasePath = '/logs/GeoLite2-City/GeoLite2-City.mmdb';
 
-    // Create a Reader object
-    $reader = new Reader($databasePath);
-
-    // Get the visitor's IP address
-    $ipAddress = $_SERVER['REMOTE_ADDR'];
-
-    // Perform the lookup
-    try {
-        $record = $reader->city($ipAddress);
-
-        // Get the city, latitude, and longitude
-        $city = $record->city->name;
-        $latitude = $record->location->latitude;
-        $longitude = $record->location->longitude;
-
-        // echo "City: " . $city . "<br>";
-        // echo "Latitude: " . $latitude . "<br>";
-        // echo "Longitude: " . $longitude . "<br>";
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-    }
+   
 
 
 
 
     //GATHERING INFORMATION
     $ip_address = $_SERVER['REMOTE_ADDR'];
-    $user_agent = $_SERVER['HTTP_USER_AGENT'];
-    $referer = $_SERVER['HTTP_REFERER'];
+    // $user_agent = $_SERVER['HTTP_USER_AGENT'];
+    // $referer = $_SERVER['HTTP_REFERER'];
 
 
 
@@ -571,9 +543,6 @@ $free_coordinate = 149;
                    THIS TRANSACTION: $subTotal
                    UPDATED BALANCE: $updatedBalance
                    ip: $ip_address
-                   city: $city
-                   Latitude: $latitude
-                   Longitude: $longitude
                    \n";
 
     // Display the log message as an error (if errors are logged)
