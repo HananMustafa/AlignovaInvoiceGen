@@ -494,6 +494,18 @@ $free_coordinate = 149;
 
 
 
+
+
+
+
+    //GATHERING INFORMATION
+    $ip_address = $_SERVER['REMOTE_ADDR'];
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+    $referer = $_SERVER['HTTP_REFERER'];
+
+
+
+
     //LOG
     try{
         // Generate a log message
@@ -501,6 +513,9 @@ $free_coordinate = 149;
                    PATIENT: $patient_name 
                    THIS TRANSACTION: $subTotal
                    UPDATED BALANCE: $updatedBalance
+                   ip: $ip_address
+                   user-agent: $user_agent
+                   referer: $referer
                    \n";
 
     // Display the log message as an error (if errors are logged)
@@ -515,6 +530,9 @@ $free_coordinate = 149;
     // Log the exception message
     trigger_error("Error: " . $e->getMessage(), E_USER_ERROR);
     }
+
+
+
 
 
 
